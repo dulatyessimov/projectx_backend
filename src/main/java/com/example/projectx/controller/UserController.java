@@ -1,33 +1,39 @@
 package com.example.projectx.controller;
 
+import com.example.projectx.dto.user.UserCreateRequest;
+import com.example.projectx.dto.user.UserResponse;
 import com.example.projectx.entity.User;
 import com.example.projectx.repository.UserRepository;
+import com.example.projectx.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
  * REST API for Users
  */
+
+//2 CHANGE
 @RestController
 @RequestMapping("/users") // Base URL for this controller
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    // Controller depends on SERVICE, not repository now (2)
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    // GET /users → returns list of all users
+    // GET /users → returns list of users (DTOs)
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     // POST /users → create new user
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public UserResponse createUser(@RequestBody UserCreateRequest dto) {
+        return userService.createUser(dto);
     }
 }
 

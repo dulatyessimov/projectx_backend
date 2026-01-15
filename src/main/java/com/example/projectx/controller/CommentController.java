@@ -1,33 +1,31 @@
 package com.example.projectx.controller;
 
-import com.example.projectx.entity.Comment;
-import com.example.projectx.repository.CommentRepository;
+import com.example.projectx.dto.comment.CommentCreateRequest;
+import com.example.projectx.dto.comment.CommentResponse;
+import com.example.projectx.service.CommentService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-/**
- * REST API for Comments
- */
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
 
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
 
-    public CommentController(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     // GET /comments → list all comments
     @GetMapping
-    public List<Comment> getAllComments() {
-        return commentRepository.findAll();
+    public List<CommentResponse> getAllComments() {
+        return commentService.getAllComments();
     }
 
-    // POST /comments → create new comment
+    // POST /comments → create a comment
     @PostMapping
-    public Comment createComment(@RequestBody Comment comment) {
-        return commentRepository.save(comment);
+    public CommentResponse createComment(@RequestBody CommentCreateRequest dto) {
+        return commentService.createComment(dto);
     }
 }
-

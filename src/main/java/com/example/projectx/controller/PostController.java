@@ -1,33 +1,31 @@
 package com.example.projectx.controller;
 
-import com.example.projectx.entity.Post;
-import com.example.projectx.repository.PostRepository;
+import com.example.projectx.dto.post.PostCreateRequest;
+import com.example.projectx.dto.post.PostResponse;
+import com.example.projectx.service.PostService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-/**
- * REST API for Posts
- */
 @RestController
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
 
-    public PostController(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
-    // GET /posts → return all posts
+    // GET /posts → all posts
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponse> getAllPosts() {
+        return postService.getAllPosts();
     }
 
-    // POST /posts → create a new post
+    // POST /posts → create new post
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postRepository.save(post);
+    public PostResponse createPost(@RequestBody PostCreateRequest dto) {
+        return postService.createPost(dto);
     }
 }
-
